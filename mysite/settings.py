@@ -25,7 +25,11 @@ SECRET_KEY = '73^vn)x285gdt9d1%i=$6&e&+sskoa@sbw=x#n)%hza=+*cj16'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = [ 'frang.pythonanywhere.com']
+=======
+ALLOWED_HOSTS = ['community.pythonanywhere.com'.  'frang.pythonanywhere.com']
+>>>>>>> 14aa91ed0ee4e6b62ac72996ccdae72823a2d2f4
 
 
 # Application definition
