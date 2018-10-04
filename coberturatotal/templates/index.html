@@ -1,0 +1,58 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+<h1>COBERTURA TOTAL</h1>
+
+
+  <!-- <p>Welcome to <em>LocalLibrary</em>, a very basic Django website developed as a tutorial example on the Mozilla Developer Network.</p> -->
+
+<h2>Buscador de Direcciones en Cobertura</h2>
+<!--
+  <p>Recuento:</p>
+  <ul>
+    <li><strong>Municipios:</strong> {{ num_municipios }}</li>
+
+  </ul>
+-->
+   <form action="/" method="get">
+      <select  name="poblacion" class="input">
+        {% for municipio in municipios %}
+            <option value="{{ municipio.municipio }}">{{ municipio.municipio }}</option>
+        {% endfor %}
+      </select>
+      <input type="text" name="via">
+        <input type="submit" value="Search">
+     <form action="/" method="get">
+
+{% if direcciones %}
+    <h3>Encontrada{{num_direcciones|pluralize:"s"}} {{num_direcciones}} direcci{{num_direcciones|pluralize:"ón,ones"}}</h3>
+       <table class="table table-bordered table-hover table-condensed" id="cobTot" >
+         <thead>
+           <tr class="header" id="floatingheader" style="background:#555; color:#f1f1f1; ">
+             <td>Municipio</td>
+             <td>Dirección</td>
+             <td>CodPostal</td>
+             <td>UUII en Cobertura</td>
+           </tr>
+         </thead>
+         <tbody>
+       {% for direccion in direcciones %}
+         <tr>
+           <td>{{ direccion.municipio }}</td>
+           <td>
+           <a href="{{ direccion.googleMapsLink }}">{{ direccion.tipo_via }} {{ direccion.nombre_via }}, {{ direccion.numero }}</a>
+           </td>
+           <td>{{ direccion.cod_postal }}</td>
+           <td>{{ direccion.uuii }}</td>
+         </tr>
+       {% endfor %}
+       </tbody>
+     </table>
+
+     {% else %}
+        {% if query %}
+          <p>No hay direcciones en Cobertura.</p>
+       {% endif %}
+     {% endif %}
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base_template.html" %}
+{% block content %}
+    <h1>Direcciones en Cobertura</h1>
+
+    {% if direcciones_list %}
+    <ul>
+
+      <table class="table table-bordered table-hover table-condensed" id="cobTot" >
+        <thead>
+          <tr class="header" id="floatingheader" style="background:#555; color:#f1f1f1; ">
+            <td>Municipio</td>
+            <td>Dirección</td>
+            <td>CodPostal</td>
+            <td>UUII en Cobertura</td>
+          </tr>
+        </thead>
+        <tbody>
+      {% for direccion in direcciones_list %}
+
+
+      <tr>
+        <td>{{ direccion.municipio }}</td>
+        <td>
+        <a href="{{ direccion.googleMapsLink }}">{{ direccion.tipo_via }} {{ direccion.nombre_via }}, {{ direccion.numero }}</a>
+        </td>
+        <td>{{ direccion.cod_postal }}</td>
+        <td>{{ direccion.uuii }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </ul>
+    {% else %}
+      <p>No hay direcciones en Cobertura.</p>
+    {% endif %}
+{% endblock %}
