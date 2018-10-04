@@ -8,7 +8,7 @@ def index(request):
 
     num_municipios = DireccionEnCobertura.objects.values_list('municipio').distinct().count()
     #municipios = Ciudad.objects.all()
-    municipios = DireccionEnCobertura.objects.order_by().values('municipio').distinct()
+    municipios = DireccionEnCobertura.objects.order_by('municipio').values('municipio').distinct()
     #return HttpResponse("Index de Cobertura Total.")
     if 'poblacion' in request.GET:
         query=True
