@@ -14,15 +14,15 @@
 
   </ul>
 -->
-   <form action="/" method="get">
+   <form action="" method="get">
       <select  name="poblacion" class="input">
         {% for municipio in municipios %}
             <option value="{{ municipio.municipio }}">{{ municipio.municipio }}</option>
         {% endfor %}
       </select>
       <input type="text" name="via">
-        <input type="submit" value="Search">
-     <form action="/" method="get">
+        <input type="submit" value="Buscar">
+     </form>
 
 {% if direcciones %}
     <h3>Encontrada{{num_direcciones|pluralize:"s"}} {{num_direcciones}} direcci{{num_direcciones|pluralize:"ón,ones"}}</h3>
@@ -40,7 +40,7 @@
          <tr>
            <td>{{ direccion.municipio }}</td>
            <td>
-           <a href="{{ direccion.googleMapsLink }}">{{ direccion.tipo_via }} {{ direccion.nombre_via }}, {{ direccion.numero }}</a>
+           <a href="{{ direccion.googleMapsLink }}" target="_blank">{{ direccion.tipo_via }} {{ direccion.nombre_via }}, {{ direccion.numero }}</a>
            </td>
            <td>{{ direccion.cod_postal }}</td>
            <td>{{ direccion.uuii }}</td>

@@ -1,0 +1,93 @@
+{% extends 'base_template.html' %}
+
+
+
+{% block content %}
+  <h1>Actuaciones Pendientes de Replanteo  {% if poblacion %} ( {{ poblacion }} ) {% endif %} </h1>
+
+  <form action="" method="get">
+      <select  name="poblacion" class="input">
+        {% for municipio in municipios %}
+            <option value="{{ municipio.municipio }}">{{ municipio.municipio }}</option>
+        {% endfor %}
+      </select>
+    <!--  <input type="checkbox" name="mostrar_todo" >Mostrar Todas -->
+        <input type="submit" value="Buscar">
+     </form>
+
+
+  {% if actuaciones %}
+    <h3>Mostrando {{actuaciones.object_list.count}}  del total de {{num_actuaciones}} actuaci{{num_actuaciones|pluralize:"ón,ones"}}</h3>
+
+    {% if actuaciones.has_other_pages %}
+        <ul class="pagination">
+           {% if actuaciones.has_previous %}
+             <li><a href="?page={{ actuaciones.previous_page_number }}&poblacion={{poblacion}}">&laquo;</a></li>
+           {% else %}
+             <li class="disabled"><span>&laquo;</span></li>
+           {% endif %}
+           {% for i in actuaciones.paginator.page_range %}
+             {% if actuaciones.number == i %}
+               <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+             {% else %}
+               <li><a href="?page={{ i }}&poblacion={{poblacion}}">{{ i }}</a></li>
+             {% endif %}
+           {% endfor %}
+           {% if actuaciones.has_next %}
+             <li><a href="?page={{ actuaciones.next_page_number }}&poblacion={{poblacion}}">&raquo;</a></li>
+           {% else %}
+             <li class="disabled"><span>&raquo;</span></li>
+           {% endif %}
+       </ul>
+    {% endif %}
+    <table class="table table-bordered table-hover table-condensed" id="cobTot" >
+       <thead>
+         <tr class="header" id="floatingheader" style="background:#555; color:#f1f1f1; ">
+           <!-- <td>Id de registro</td> -->
+           <td>Id de Zona</td>
+           <td>Actuación</td>
+           <td>Nº Fincas</td>
+           <td>UUII</td>
+           <td></td>
+         </tr>
+       </thead>
+       <tbody>
+         {% for actuacion in actuaciones  %}
+        <tr>
+          <td>{{actuacion.idzona}}</td>
+          <td>{{actuacion.actuacion}}</td>
+          <td>{{actuacion.num_fincas}}</td>
+          <td>{{actuacion.total_uuii}}</td>
+          <td><a href="{% url 'act_pending_replan_fincas' actuacion_id=actuacion.actuacion %}">Replantear</a></td>
+        </tr>
+
+         {% endfor %}
+       </tbody>
+     </table>
+     {% if actuaciones.has_other_pages %}
+         <ul class="pagination">
+            {% if actuaciones.has_previous %}
+              <li><a href="?page={{ actuaciones.previous_page_number }}&poblacion={{poblacion}}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in actuaciones.paginator.page_range %}
+              {% if actuaciones.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}&poblacion={{poblacion}}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if actuaciones.has_next %}
+              <li><a href="?page={{ actuaciones.next_page_number }}&poblacion={{poblacion}}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+      </ul>
+     {% endif %}
+  {% else %}
+          {% if poblacion %}
+            <p>No hay actuaciones sin preparar en {{ poblacion }}.</p>
+          {% endif %}
+  {% endif  %}
+{% endblock %}

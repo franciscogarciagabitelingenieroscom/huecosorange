@@ -20,5 +20,6 @@ from django.urls import include, path
 urlpatterns = [
     path('', include('coberturatotal.urls')),
     path('coberturatotal/', include('coberturatotal.urls')),
+    path('actuaciones/', include('actuaciones.urls')),  #importa las urls de la app 'actuaciones' (hay que crear el fichero urls.py en actuaciones/)
     path('admin/', admin.site.urls),
 ]

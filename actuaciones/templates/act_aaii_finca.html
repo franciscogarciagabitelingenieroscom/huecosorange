@@ -1,0 +1,18 @@
+{% extends 'base_template.html' %}
+
+
+
+{% block content %}
+
+<h1>{{finca.actuacion.actuacion}}</h1>
+  <p> Dirección de la finca: {{ finca.nombre_via}}, {{ finca.numero_via}} </p>
+  <p> UUII iniciales de la finca: {{ finca.numero_uuii}} </p>
+  {% if wrong_user %}
+  <p class="error"> {{ wrong_user}} </p>
+  {% endif %}
+    <form method="POST" class="act_prep_finca">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+
+{% endblock %}

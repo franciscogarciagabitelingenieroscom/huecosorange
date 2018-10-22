@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block title %}<title>HUECOS ORANGE</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Add additional CSS in static file -->
+  {% load staticfiles %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+</head>
+
+<body>
+  <div class="container-fluid">
+
+      <div class="row">
+
+        <div class="col-sm-2">
+        {% block sidebar %}
+
+
+
+          <h3>Herramientas de Huecos</h3>
+
+          {% if request.user.is_staff %}
+          <ul class="sidebar-nav">
+            <li><a href="{% url 'admin:index' %}">Administración</a></li>
+            <li><a href="">Todas las Actuaciones</a></li>
+            <li><a href=""></a></li>
+          </ul>
+          {% endif %}
+          <ul class="sidebar-nav">
+            <li><a href="{% url 'index' %}">Cobertura Total</a></li>
+            <li>Actuaciones
+              <ul>
+                <li><a href="{% url 'act_pending_prep' %}">Preparar</a></li>
+                <li><a href="{% url 'act_pending_replan' %}">Replantear</a></li>
+                <li><a href="{% url 'act_pending_aaii' %}">Realizar AAII</a></li>
+              </ul>
+            </li>
+            <!--<li><a href="{% url 'direcciones' %}">Todas las Direcciones en Cobertura</a></li>
+            <li><a href="">All authors</a></li>-->
+        </ul>
+       {% endblock %}
+        </div>
+          <div class="col-sm-10 ">
+            <div class='btn-toolbar pull-right'>
+                <div class='btn-group'>
+                  {% if user.is_authenticated %}
+                    ¡Hola {{ user.username }}!
+                    <p><a class="btn btn-danger "  href="{% url 'logout' %}"><span class="glyphicon glyphicon-off"> Salir</a></p>
+                  {% else %}
+                    <p>No has entrado</p>
+                    <a class="btn btn-success "  href="{% url 'login' %}"><span class="glyphicon glyphicon-off"> Entrar</a>
+                  {% endif %}
+
+
+          </div>
+        </div>
+        {% block content %}{% endblock %}
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

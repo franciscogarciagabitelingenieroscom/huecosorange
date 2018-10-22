@@ -1,0 +1,65 @@
+{% extends 'base_template.html' %}
+
+
+
+{% block content %}
+  <h1>Actuaciones Pendientes de Replantear  {% if poblacion %} ( {{ poblacion }} ) {% endif %} </h1>
+
+  {% if fincas %}
+    <h3>Encontrada{{fincas.count |pluralize:"s"}} {{fincas.count}} finca{{fincas.count|pluralize:"s"}} para la actuación {{actuacion.actuacion}}</h3>
+    <table class="table table-bordered table-hover table-condensed" id="cobTot" >
+       <thead>
+         <tr class="header" id="floatingheader" style="background:#555; color:#f1f1f1; ">
+           <!-- <td>Id de registro</td> -->
+           <td>Gescal17</td>
+           <td>Catastro</td>
+           <td>Vía</td>
+           <td>Número</td>
+           <td>UUII total</td>
+           <td>UUII a recuperar</td>
+           <td>Aclaraciones</td>
+           <td>Estado</td>
+         </tr>
+       </thead>
+       <tbody>
+         {% for finca in fincas  %}
+        <tr>
+          <td>{{finca.gescal17}}</td>
+          <td><a href="{{finca.catastroLink}}" target="_blank">{{finca.ref_parcela}}</a></td>
+          <td>{{finca.nombre_via}}</td>
+          <td>{{finca.numero_via}}</td>
+          <td>{{finca.numero_uuii}}</td>
+          <td>{{finca.numero_uuii_definitivo|default_if_none:"?"}}</td>
+          <td>{{finca.aclaraciones |linebreaksbr}}</td>
+          <td>
+            {% if finca.resultado_replanteo and finca.resultado_replanteo != finca.CONSULTA and finca.resultado_replanteo != finca.REPLANTEAR %}
+              {{finca.resultado_replanteo}} ({{actuacion.replanteado_por.username}})
+            {% else %}
+              {% if actuacion.replanteado_por.username == user.username %}
+                <a href="{% url 'act_replan_finca' pk=finca.pk %}"> {{finca.resultado_replanteo|default_if_none:"Replantear"}}</a>
+              {% else %}
+                {{actuacion.replanteado_por.username}}
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+
+         {% endfor %}
+       </tbody>
+     </table>
+
+       {% if fincas.count == fincas_preparadas  %}
+
+            Todas las Fincas replanteadas.
+            <div class='btn-group'>
+               <a href= "{% url 'act_close_rep' actuacion_id=actuacion.actuacion %}" class="btn btn-success "  > <span class="glyphicon glyphicon-check"> Finalizar Replanteo</span></a>
+            </div>
+
+       {% endif %}
+
+  {% else %}
+
+            <p>No hay actuaciones sin replantear en {{ poblacion }}.</p>
+
+  {% endif  %}
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base_template.html' %}
+
+
+
+{% block content %}
+  <h1>Actuaciones Pendientes de Preparar  {% if poblacion %} ( {{ poblacion }} ) {% endif %} </h1>
+
+  {% if fincas %}
+    <h3>Encontrada{{fincas.count |pluralize:"s"}} {{fincas.count}} finca{{fincas.count|pluralize:"s"}} para la actuación {{actuacion.actuacion}}</h3>
+    {% if trace %}
+      {{trace}}
+    {% endif %}
+    <table class="table table-bordered table-hover table-condensed" id="cobTot" >
+       <thead>
+         <tr class="header" id="floatingheader" style="background:#555; color:#f1f1f1; ">
+           <!-- <td>Id de registro</td> -->
+           <td>Gescal17</td>
+           <td>Catastro</td>
+           <td>Vía</td>
+           <td>Número</td>
+           <td>UUII total</td>
+           <td>UUII a recuperar</td>
+           <td>Observaciones</td>
+           <td>Estado</td>
+         </tr>
+       </thead>
+       <tbody>
+         {% for finca in fincas  %}
+        <tr>
+          <td>{{finca.gescal17}}</td>
+          <td><a href="{{finca.catastroLink}}" target="_blank">{{finca.ref_parcela}}</a></td>
+          <td>{{finca.nombre_via}}</td>
+          <td>{{finca.numero_via}}</td>
+          <td>{{finca.numero_uuii}}</td>
+          <td>{{finca.numero_uuii_definitivo|default_if_none:"?"}}</td>
+          <td>{{finca.observaciones}}</td>
+          <td>
+            {% if finca.resultado_preparacion and finca.resultado_preparacion != finca.CONSULTA %}
+              {{finca.resultado_preparacion}} ({{actuacion.preparado_por.username}})
+            {% else %}
+              {% if actuacion.preparado_por.username == user.username %}
+                <a href="{% url 'act_prep_finca' pk=finca.pk %}">  {{finca.resultado_preparacion|default_if_none:"Preparar"}}</a>
+              {% else %}
+                {{actuacion.preparado_por.username}}
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+
+         {% endfor %}
+       </tbody>
+     </table>
+       {% if fincas.count == fincas_preparadas  %}
+
+            Todas las Fincas preparadas.
+            <div class='btn-group'>
+               <a href= "{% url 'act_close_prep' actuacion_id=actuacion.actuacion %}" class="btn btn-success "  > <span class="glyphicon glyphicon-check"> Finalizar Preparación</span></a>
+            </div>
+
+       {% endif %}
+
+  {% else %}
+          {% if poblacion %}
+            <p>No hay actuaciones sin preparar en {{ poblacion }}.</p>
+          {% endif %}
+  {% endif  %}
+{% endblock %}
